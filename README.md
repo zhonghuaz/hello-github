@@ -1,2 +1,2 @@
 # hello-github
-My repository
+Repository for storing ideas and book reading notes.
