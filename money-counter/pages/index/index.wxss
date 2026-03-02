@@ -1,0 +1,246 @@
+/* pages/index/index.wxss */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 30rpx;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 40rpx;
+}
+
+/* Canvas 金币动画层 */
+.coin-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* 顶部标题 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 42rpx;
+  font-weight: bold;
+  color: #d4a017;
+  text-shadow: 0 0 20rpx rgba(212, 160, 23, 0.3);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 10rpx;
+}
+
+/* 核心金额展示区 */
+.amount-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40rpx 0;
+  padding: 50rpx 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 30rpx;
+  border: 1rpx solid rgba(212, 160, 23, 0.2);
+}
+
+.amount-label {
+  font-size: 30rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20rpx;
+}
+
+.amount-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.currency-symbol {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #d4a017;
+  margin-right: 10rpx;
+  text-shadow: 0 0 15rpx rgba(212, 160, 23, 0.4);
+}
+
+.amount-value {
+  font-size: 96rpx;
+  font-weight: bold;
+  color: #f5c842;
+  text-shadow: 
+    0 0 20rpx rgba(245, 200, 66, 0.5),
+    0 0 40rpx rgba(245, 200, 66, 0.2);
+  letter-spacing: 4rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.per-second-info {
+  font-size: 24rpx;
+  color: rgba(212, 160, 23, 0.7);
+  margin-top: 16rpx;
+}
+
+/* 控制按钮 */
+.button-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+  width: 100%;
+}
+
+.action-btn {
+  flex: 1;
+  max-width: 400rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+  color: #1a1a2e;
+  text-align: center;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #f5c842 0%, #d4a017 100%);
+  box-shadow: 0 8rpx 30rpx rgba(212, 160, 23, 0.4);
+}
+
+.start-btn[disabled] {
+  background: linear-gradient(135deg, #666 0%, #444 100%);
+  color: #999;
+  box-shadow: none;
+}
+
+.pause-btn {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #ffffff;
+  box-shadow: 0 8rpx 30rpx rgba(231, 76, 60, 0.4);
+}
+
+.reset-btn {
+  flex: 0 0 auto;
+  width: 200rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 45rpx;
+  font-size: 28rpx;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.reset-btn::after {
+  border: none;
+}
+
+/* 输入区域 */
+.input-section {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.input-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 24rpx;
+  padding: 10rpx 30rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+}
+
+.input-row:last-child {
+  border-bottom: none;
+}
+
+.input-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+
+.input-field {
+  flex: 1;
+  text-align: right;
+  font-size: 32rpx;
+  color: #f5c842;
+  font-weight: bold;
+}
+
+.placeholder-style {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: normal;
+}
+
+.picker-value {
+  font-size: 32rpx;
+  color: #f5c842;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.picker-arrow {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: 10rpx;
+}
+
+/* 音效开关 */
+.sound-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  padding: 20rpx 30rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+.sound-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 底部信息 */
+.footer {
+  margin-top: 20rpx;
+  padding-bottom: 40rpx;
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.3);
+}

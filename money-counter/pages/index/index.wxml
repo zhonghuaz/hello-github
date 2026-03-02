@@ -1,0 +1,104 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <!-- Canvas 金币动画层 -->
+  <canvas 
+    type="2d" 
+    id="coinCanvas" 
+    class="coin-canvas"
+    wx:if="{{showCanvas}}"
+  ></canvas>
+
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">💰 今天你在赚钱</text>
+    <text class="subtitle">时间就是金钱，朋友</text>
+  </view>
+
+  <!-- 核心金额展示区 -->
+  <view class="amount-section">
+    <text class="amount-label">{{isRunning ? '你已经赚到' : (notWorkTime ? '当前未到工作时间' : '准备开始赚钱')}}</text>
+    <view class="amount-display">
+      <text class="currency-symbol">¥</text>
+      <text class="amount-value">{{displayAmount}}</text>
+    </view>
+    <text class="per-second-info" wx:if="{{perSecondIncome > 0}}">每秒赚 ¥{{perSecondDisplay}}</text>
+  </view>
+
+  <!-- 控制按钮 -->
+  <view class="button-section">
+    <button 
+      class="action-btn {{isRunning ? 'pause-btn' : 'start-btn'}}" 
+      bindtap="toggleTimer"
+      disabled="{{!canStart}}"
+    >
+      {{isRunning ? '⏸ 暂停' : '🚀 开始赚钱'}}
+    </button>
+    <button 
+      class="reset-btn" 
+      bindtap="resetAll"
+      wx:if="{{totalEarned > 0}}"
+    >
+      🔄 重置
+    </button>
+  </view>
+
+  <!-- 输入区域 -->
+  <view class="input-section">
+    <view class="input-card">
+      <view class="input-row">
+        <text class="input-label">💵 月薪（元）</text>
+        <input 
+          class="input-field" 
+          type="digit" 
+          placeholder="请输入月薪" 
+          value="{{salary}}"
+          bindinput="onSalaryInput"
+          placeholder-class="placeholder-style"
+        />
+      </view>
+
+      <view class="input-row">
+        <text class="input-label">🕐 上班时间</text>
+        <picker 
+          mode="time" 
+          value="{{startTime}}" 
+          bindchange="onStartTimeChange"
+        >
+          <view class="picker-value">
+            {{startTime || '请选择'}}
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="input-row">
+        <text class="input-label">🕕 下班时间</text>
+        <picker 
+          mode="time" 
+          value="{{endTime}}" 
+          bindchange="onEndTimeChange"
+        >
+          <view class="picker-value">
+            {{endTime || '请选择'}}
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 音效开关 -->
+    <view class="sound-toggle">
+      <text class="sound-label">🔊 金币音效</text>
+      <switch 
+        checked="{{soundEnabled}}" 
+        bindchange="toggleSound"
+        color="#d4a017"
+      />
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="footer-text">默认月工作天数：21.75天</text>
+  </view>
+</view>
