@@ -36,6 +36,10 @@ Page({
 
   onLoad() {
     this._initAudio();
+    // 从存储中读取用户设置
+    this._loadSettings();
+    // 自动计算当前已赚金额
+    this._autoStartIfInWorkHours();
   },
 
   onReady() {
@@ -108,20 +112,105 @@ Page({
       });
   },
 
+  // ==================== 自动开始计算 ====================
+  _autoStartIfInWorkHours() {
+    const { salary, startTime, endTime } = this.data;
+    const salaryNum = parseFloat(salary);
+
+    // 如果没有设置薪资，不自动开始
+    if (!salaryNum || salaryNum <= 0 || !startTime || !endTime) {
+      return;
+    }
+
+    // 检查是否在工作时间内
+    if (!this._isWorkTime()) {
+      return;
+    }
+
+    // 计算每秒收入
+    const startParts = startTime.split(':');
+    const endParts = endTime.split(':');
+    const startMinutes = parseInt(startParts[0]) * 60 + parseInt(startParts[1]);
+    const endMinutes = parseInt(endParts[0]) * 60 + parseInt(endParts[1]);
+    const workSeconds = (endMinutes - startMinutes) * 60;
+
+    if (workSeconds <= 0) {
+      return;
+    }
+
+    const workDays = app.globalData.workDaysPerMonth;
+    const perSecondIncome = salaryNum / workDays / workSeconds;
+
+    // 计算从上班到现在经过的秒数
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const workedSeconds = (currentMinutes - startMinutes) * 60;
+
+    // 加上当前这一分钟的秒数
+    const currentSecond = now.getSeconds();
+    const totalWorkedSeconds = workedSeconds + currentSecond;
+
+    if (totalWorkedSeconds <= 0) {
+      return;
+    }
+
+    const totalEarned = totalWorkedSeconds * perSecondIncome;
+
+    // 设置数据并开始计时
+    this.setData({
+      perSecondIncome,
+      perSecondDisplay: perSecondIncome.toFixed(4),
+      totalEarned,
+      displayAmount: totalEarned.toFixed(2),
+      isRunning: true,
+      canStart: true,
+      notWorkTime: false,
+      showCanvas: true
+    });
+
+    // 记录上次tick时间
+    this._lastTickTime = Date.now();
+
+    // 延迟初始化 Canvas
+    setTimeout(() => {
+      this._initCanvas();
+    }, 100);
+
+    // 启动定时器
+    this._startInterval();
+  },
+
+  // ==================== 用户输入处理 ====================
+  _loadSettings() {
+    const salary = wx.getStorageSync('salary') || '';
+    const startTime = wx.getStorageSync('startTime') || '09:00';
+    const endTime = wx.getStorageSync('endTime') || '18:00';
+    this.setData({ salary, startTime, endTime });
+  },
+
+  _saveSettings() {
+    wx.setStorageSync('salary', this.data.salary);
+    wx.setStorageSync('startTime', this.data.startTime);
+    wx.setStorageSync('endTime', this.data.endTime);
+  },
+
   // ==================== 用户输入处理 ====================
   onSalaryInput(e) {
     const salary = e.detail.value;
     this.setData({ salary });
+    this._saveSettings();
     this._recalculate();
   },
 
   onStartTimeChange(e) {
     this.setData({ startTime: e.detail.value });
+    this._saveSettings();
     this._recalculate();
   },
 
   onEndTimeChange(e) {
     this.setData({ endTime: e.detail.value });
+    this._saveSettings();
     this._recalculate();
   },
 
