@@ -10,7 +10,7 @@
 
   <!-- 顶部标题 -->
   <view class="header">
-    <text class="title">💰 今天你在赚钱</text>
+    <text class="title">💰 牛马计费器</text>
     <text class="subtitle">时间就是金钱，朋友</text>
   </view>
 

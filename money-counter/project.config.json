@@ -1,5 +1,5 @@
 {
-  "description": "实时赚钱计数器小程序",
+  "description": "牛马计费器 - 实时赚钱计数器小程序",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -42,7 +42,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.3.4",
   "appid": "touristappid",
-  "projectname": "money-counter",
+  "projectname": "牛马计费器",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
