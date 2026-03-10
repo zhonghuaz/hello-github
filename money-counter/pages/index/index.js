@@ -122,11 +122,6 @@ Page({
       return;
     }
 
-    // 检查是否在工作时间内
-    if (!this._isWorkTime()) {
-      return;
-    }
-
     // 计算每秒收入
     const startParts = startTime.split(':');
     const endParts = endTime.split(':');
@@ -140,6 +135,21 @@ Page({
 
     const workDays = app.globalData.workDaysPerMonth;
     const perSecondIncome = salaryNum / workDays / workSeconds;
+
+    // 检查是否在工作时间内
+    if (!this._isWorkTime()) {
+      // 不在工作时间内，显示0但保持canStart为true以便用户手动开始
+      this.setData({
+        perSecondIncome,
+        perSecondDisplay: perSecondIncome.toFixed(4),
+        totalEarned: 0,
+        displayAmount: '0.00',
+        isRunning: false,
+        canStart: true,
+        notWorkTime: true
+      });
+      return;
+    }
 
     // 计算从上班到现在经过的秒数
     const now = new Date();
@@ -502,23 +512,16 @@ Page({
     this._stopCoinAnimation();
     this._lastTriggerMultiple = 0;
 
-    this.setData({
-      totalEarned: 0,
-      displayAmount: '0.00',
-      isRunning: false,
-      notWorkTime: false
-    });
+    // 重置时根据当前系统时间重新计算
+    this._autoStartIfInWorkHours();
   },
 
   _resetState() {
     this._clearInterval();
     this._lastTriggerMultiple = 0;
 
-    this.setData({
-      totalEarned: 0,
-      displayAmount: '0.00',
-      isRunning: false
-    });
+    // 修改参数后根据当前时间重新计算
+    this._autoStartIfInWorkHours();
   },
 
   // ==================== 音效开关 ====================
